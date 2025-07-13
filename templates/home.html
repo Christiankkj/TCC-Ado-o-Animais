@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adoção de animais</title>
+</head>
+<body>
+    <header>
+    <h1>ADOÇAO DE ANIMAIS</h1>
+    <div class="auth-links">
+        {% if g.user %}
+            <span>Olá, {{ g.user['nome'] }}</span>
+            <a href="{{ url_for('auth.logout') }}">Sair</a>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}">Login</a>
+            <a href="{{ url_for('auth.register') }}">Sign In</a>
+        {% endif %}
+    </div>
+</header>
+</body>
+</html>

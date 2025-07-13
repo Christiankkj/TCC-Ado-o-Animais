@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro</title>
+</head>
+<body>
+
+<h2>Registro</h2>
+
+<!-- Flash messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<form method="POST" action=" = {{url_for('auth.register')}}">
+    {{ form.hidden_tag() }}
+
+    <p>
+        {{ form.tipo.label }}<br>
+        {{ form.tipo() }}<br>
+        {% for error in form.tipo.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.nome.label }}<br>
+        {{ form.nome() }}<br>
+        {% for error in form.nome.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.nome_dono.label }}<br>
+        {{ form.nome_dono() }}
+    </p>
+
+    <p>
+        {{ form.email.label }}<br>
+        {{ form.email() }}<br>
+        {% for error in form.email.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.senha.label }}<br>
+        {{ form.senha() }}<br>
+        {% for error in form.senha.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+
+    <p>{{ form.submit() }}</p>
+</form>
+
+<p>Já tem uma conta? <a href="{{ url_for('auth.login') }}">Login</a></p>
+
+</body>
+</html>
+

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        .flash.success { color: green; }
+        .flash.danger { color: red; }
+    </style>
+</head>
+<body>
+
+<h2>Login</h2>
+
+<!-- Mensagens flash -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<!-- Formulário -->
+<form method="POST" action="{{ url_for('auth.login') }}">
+    {{ form.hidden_tag() }}
+
+    <p>
+        {{ form.email.label }}<br>
+        {{ form.email(size=32) }}<br>
+        {% for error in form.email.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.senha.label }}<br>
+        {{ form.senha(size=32) }}<br>
+        {% for error in form.senha.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+
+    <p>{{ form.submit() }}</p>
+</form>
+
+</body>
+</html>
