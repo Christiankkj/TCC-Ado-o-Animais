@@ -27,7 +27,7 @@
             <span style="color: red;">{{ error }}</span>
         {% endfor %}
     </p>
-
+    
     <p>
         {{ form.nome.label }}<br>
         {{ form.nome() }}<br>
@@ -36,10 +36,11 @@
         {% endfor %}
     </p>
 
-    <p>
-        {{ form.nome_dono.label }}<br>
-        {{ form.nome_dono() }}
+    <p id="nome-dono">
+    {{ form.nome_dono.label }}<br>
+    {{ form.nome_dono() }}
     </p>
+
 
     <p>
         {{ form.email.label }}<br>
@@ -64,4 +65,21 @@
 
 </body>
 </html>
+<script>
+    const tipoSelect = document.querySelector('select[name="tipo"]');
+    const nomeDonoCampo = document.getElementById('nome-dono');
+
+    function verificarTipo() {
+        const tipo = tipoSelect.value;
+        if (tipo.toLowerCase() === 'pessoa') {
+            nomeDonoCampo.style.display = 'none';
+        } else {
+            nomeDonoCampo.style.display = '';
+        }
+    }
+
+ 
+    verificarTipo();
+    tipoSelect.addEventListener('change', verificarTipo);
+</script>
 

@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import select, text
 from database import SessionLocal
 from models import Usuario, TipoUsuarioEnum
-from forms import LoginForm, RegisterForm
+from forms import LoginForm, RegisterForm,DenunciaForm,PontoAdocaoForm
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -95,3 +95,15 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for('home'))
+
+@bp.route('/denunciar', methods = ['GET', 'POST'])
+def denunciarAnimais():
+    form = DenunciaForm()
+    error = None
+    if form.validate_on_submit():
+        tipoAnimal = form.tipo_animal.data
+        cordenada = form.cordenada.data
+        quantidade = form.quantidade.data
+        nomeDenunciante = form.nome_denunciante.data
+
+    return render_template('auth/denunciar.html', form=form)

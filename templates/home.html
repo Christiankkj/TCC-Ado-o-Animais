@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adoção de animais</title>
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+     
 </head>
 <body>
-    <header>
-    <h1>ADOÇAO DE ANIMAIS</h1>
-    <div class="auth-links">
-        {% if g.user %}
-            <span>Olá, {{ g.user['nome'] }}</span>
-            <a href="{{ url_for('auth.logout') }}">Sair</a>
-        {% else %}
-            <a href="{{ url_for('auth.login') }}">Login</a>
-            <a href="{{ url_for('auth.register') }}">Sign In</a>
-        {% endif %}
-    </div>
-</header>
+     <div id="map" style="width: 800px; height: 500px;"></div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="{{ url_for('static', filename='js/mapa.js') }}"></script>
+
 </body>
+</html>
+</html>
+</html>
+</html>
 </html>

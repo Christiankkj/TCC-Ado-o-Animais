@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Denúncia de Animais</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+</head>
+<body>
+    <div id="map" style="width: 800px; height: 500px;"></div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="{{ url_for('static', filename='js/mapa.js') }}"></script>
+
+<h2>Formulário de Denúncia</h2>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <p>
+        {{ form.tipo_animal.label }}<br>
+        {{ form.tipo_animal() }}<br>
+        {% for error in form.tipo_animal.errors %}
+            <span style="color:red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.cordenada.label }}<br>
+        {{ form.cordenada() }}<br>
+        {% for error in form.cordenada.errors %}
+            <span style="color:red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.quantidade.label }}<br>
+        {{ form.quantidade() }}<br>
+        {% for error in form.quantidade.errors %}
+            <span style="color:red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.data_denuncia.label }}<br>
+        {{ form.data_denuncia() }}<br>
+        {% for error in form.data_denuncia.errors %}
+            <span style="color:red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+
+    <p>
+        {{ form.nome_denunciante.label }}<br>
+        {{ form.nome_denunciante() }}<br>
+        {% for error in form.nome_denunciante.errors %}
+            <span style="color:red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+
+    <p>{{ form.submit() }}</p>
+</form>
+
+</body>
+</html>
