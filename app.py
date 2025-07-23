@@ -1,31 +1,37 @@
-from flask import Flask, render_template, url_for, session, request, redirect, flash, g
+from flask import Flask, render_template
 from database import Base, engine, SessionLocal
-from models import Usuario, AnimaisAdocao 
-from auth import bp as auth_bp  # importa o blueprint
+from flask_login import LoginManager
+from models import Usuario
+from auth import bp as auth_bp
 
 app = Flask(__name__)
 app.secret_key = 'Dev'
 
-# registra blueprint
-app.register_blueprint(auth_bp)
+# Configuração do Flask-Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'auth.login'  # rota para onde redirecionar se não estiver logado
 
-@app.before_request
-def carregar_usuario_logado():
-    user_id = session.get('user_id')
+# Função que carrega o usuário a partir do ID armazenado na sessão
+@login_manager.user_loader
+def load_user(user_id):
+    db = SessionLocal()
+    user = db.query(Usuario).get(int(user_id))
+    db.close()
+    return user
 
-    if user_id is None:
-        g.user = None
-    else:
-        db = SessionLocal()
-        g.user = db.query(Usuario).filter_by(id=user_id).first()
-        db.close()
 
+app.register_blueprint(auth_bp, url_prefix='/auth')
+
+# Criar as tabelas se ainda não existirem
 if not engine.dialect.has_table(engine.connect(), "usuarios"):
     Base.metadata.create_all(bind=engine)
 
+# Rota principal
 @app.route("/")
 def home():
     return render_template('home.html')
 
+# Iniciar o servidor
 if __name__ == "__main__":
     app.run(debug=True)

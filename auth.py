@@ -1,9 +1,11 @@
 from flask import Blueprint, flash, redirect, render_template, request, session, url_for
+from flask_login import login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import select, text
 from database import SessionLocal
 from models import Usuario, TipoUsuarioEnum
 from forms import LoginForm, RegisterForm,DenunciaForm,PontoAdocaoForm
+from flask_login import current_user, logout_user
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -54,6 +56,8 @@ def register():
     return render_template('auth/register.html', form=form)
 
 
+from flask_login import login_user
+
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -65,20 +69,14 @@ def login():
 
         db = SessionLocal()
         try:
-            result = db.execute(
-                text("SELECT * FROM usuarios WHERE email = :email"),
-                {'email': email}
-            )
-            user = result.mappings().first()
+            user = db.query(Usuario).filter_by(email=email).first()
 
             if user is None:
                 error = 'Email não encontrado.'
-            elif not check_password_hash(user['senha'], senha):
+            elif not check_password_hash(user.senha, senha):
                 error = 'Senha incorreta.'
             else:
-                session.clear()
-                session['email'] = user['email']
-                session['user_id'] = user.id
+                login_user(user)
                 flash('Login realizado com sucesso!', 'success')
                 return redirect(url_for('home'))
 
@@ -93,17 +91,43 @@ def login():
 
 @bp.route('/logout')
 def logout():
+    logout_user()
     session.clear()
     return redirect(url_for('home'))
 
-@bp.route('/denunciar', methods = ['GET', 'POST'])
+@bp.route('/denunciar', methods=['GET', 'POST'])
+@login_required
 def denunciarAnimais():
     form = DenunciaForm()
     error = None
-    if form.validate_on_submit():
-        tipoAnimal = form.tipo_animal.data
-        cordenada = form.cordenada.data
-        quantidade = form.quantidade.data
-        nomeDenunciante = form.nome_denunciante.data
 
+    if form.validate_on_submit():
+        tipo_animal = form.tipo_animal.data
+        coordenada = form.cordenada.data
+        quantidade = form.quantidade.data
+        id_usuario = current_user.id
+
+        db = SessionLocal()
+        try:
+            db.execute(
+                text("""
+                    INSERT INTO denuncia_animais (tipo_animal, quantidade, cordenada, id_usuario)
+                    VALUES (:tipo_animal, :quantidade, :coordenada, :id_usuario)
+                """),
+                {
+                    'tipo_animal': tipo_animal,
+                    'quantidade': quantidade,
+                    'coordenada': coordenada,
+                    'id_usuario': id_usuario
+                }
+            )
+            db.commit()
+            flash('Denúncia registrada com sucesso!', 'success')
+            return redirect(url_for('map'))
+        except Exception as e:
+            db.rollback()
+            error = f"Erro ao registrar denúncia: {str(e)}"
+            flash(error, 'danger')
+        finally:
+            db.close()
     return render_template('auth/denunciar.html', form=form)

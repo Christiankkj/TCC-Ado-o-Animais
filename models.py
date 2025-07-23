@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 from database import Base
 import enum
+from flask_login import UserMixin
 
 class TipoUsuarioEnum(enum.Enum):
     pessoa = "pessoa"
@@ -11,7 +12,7 @@ class TipoAnimalEnum(enum.Enum):
     gato = "gato"
     cachorro = "cachorro"
 
-class Usuario(Base):
+class Usuario(Base, UserMixin):
     __tablename__ = 'usuarios'
 
     id = Column(Integer, primary_key=True)
