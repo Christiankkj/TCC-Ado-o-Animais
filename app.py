@@ -3,14 +3,15 @@ from database import Base, engine, SessionLocal
 from flask_login import LoginManager
 from models import Usuario
 from auth import bp as auth_bp
+from sqlalchemy import text
 
 app = Flask(__name__)
 app.secret_key = 'Dev'
 
-# Configuração do Flask-Login
+
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'auth.login'  # rota para onde redirecionar se não estiver logado
+login_manager.login_view = 'auth.login'  
 
 # Função que carrega o usuário a partir do ID armazenado na sessão
 @login_manager.user_loader
@@ -23,15 +24,23 @@ def load_user(user_id):
 
 app.register_blueprint(auth_bp, url_prefix='/auth')
 
-# Criar as tabelas se ainda não existirem
 if not engine.dialect.has_table(engine.connect(), "usuarios"):
     Base.metadata.create_all(bind=engine)
 
-# Rota principal
-@app.route("/")
-def home():
-    return render_template('home.html')
 
-# Iniciar o servidor
+@app.route('/')
+def home():
+    db = SessionLocal()
+    try:
+        # Transforma RowMapping em dicionário com list comprehension
+        denuncias = [dict(row) for row in db.execute(text("SELECT * FROM denuncia_animais")).mappings().all()]
+        pontos = [dict(row) for row in db.execute(text("SELECT * FROM ponto_adocao")).mappings().all()]
+    finally:
+        db.close()
+
+    return render_template("home.html", denuncias=denuncias, pontos=pontos)
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)

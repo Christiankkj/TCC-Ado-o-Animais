@@ -100,14 +100,21 @@ def logout():
 def denunciarAnimais():
     form = DenunciaForm()
     error = None
-
+    db = SessionLocal()
+    try:
+        # Transforma RowMapping em dicionário com list comprehension
+        denuncias = [dict(row) for row in db.execute(text("SELECT * FROM denuncia_animais")).mappings().all()]
+        pontos = [dict(row) for row in db.execute(text("SELECT * FROM ponto_adocao")).mappings().all()]
+    finally:
+        db.close()    
     if form.validate_on_submit():
         tipo_animal = form.tipo_animal.data
         coordenada = form.cordenada.data
         quantidade = form.quantidade.data
         id_usuario = current_user.id
+        
 
-        db = SessionLocal()
+        
         try:
             db.execute(
                 text("""
@@ -130,4 +137,53 @@ def denunciarAnimais():
             flash(error, 'danger')
         finally:
             db.close()
-    return render_template('auth/denunciar.html', form=form)
+    return render_template('auth/denunciar.html', form=form,denuncias=denuncias, pontos=pontos)
+
+
+@bp.route('/cadastrar_ponto', methods=['GET', 'POST'])
+@login_required
+def cadastrar_ponto():
+    form = PontoAdocaoForm()
+    error = None
+    db = SessionLocal()
+    try:
+        # Transforma RowMapping em dicionário com list comprehension
+        denuncias = [dict(row) for row in db.execute(text("SELECT * FROM denuncia_animais")).mappings().all()]
+        pontos = [dict(row) for row in db.execute(text("SELECT * FROM ponto_adocao")).mappings().all()]
+    finally:
+        db.close() 
+    if form.validate_on_submit():
+        nome_local = form.nome_local.data
+        tipo_animal = form.tipo_animal.data
+        cordenada = form.cordenada.data
+        responsavel_contato = form.responsavel_contato.data
+        id_usuario = current_user.id
+
+        db = SessionLocal()
+        try:
+            denuncias = [dict(row) for row in db.execute(text("SELECT * FROM denuncia_animais")).mappings().all()]
+            pontos = [dict(row) for row in db.execute(text("SELECT * FROM ponto_adocao")).mappings().all()]
+            db.execute(
+                text("""
+                    INSERT INTO ponto_adocao (nome_local, tipo_animal, quantidade_disponivel, responsavel_contato, cordenada, id_usuario)
+                    VALUES (:nome_local, :tipo_animal, 0, :responsavel_contato, :cordenada, :id_usuario)
+                """),
+                {
+                    'nome_local': nome_local,
+                    'tipo_animal': tipo_animal,
+                    'responsavel_contato': responsavel_contato,
+                    'cordenada': cordenada,
+                    'id_usuario': id_usuario
+                }
+            )
+            db.commit()
+            flash('Ponto de adoção cadastrado com sucesso!', 'success')
+            return redirect(url_for('home'))
+        except Exception as e:
+            db.rollback()
+            error = f"Erro ao cadastrar ponto: {str(e)}"
+            flash(error, 'danger')
+        finally:
+            db.close()
+
+    return render_template('auth/cadastrar_ponto.html', form=form,denuncias=denuncias, pontos=pontos)

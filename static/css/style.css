@@ -1,0 +1,239 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BASE */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* NAVBAR */
+nav {
+    background-color: #5FB04F;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+    color: white;
+    font-weight: bold;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    transition: background-color 0.3s ease;
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+/* TÍTULOS */
+h1, h2 {
+    text-align: center;
+    margin: 30px 0;
+}
+
+/* MAPA */
+#map {
+    width: 90%;
+    height: 600px;
+    max-width: 1200px;
+    margin: 0 auto 40px;
+    border: 10px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ÁREA DO FORMULÁRIO CENTRALIZADA */
+.form-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    min-height: 70vh;
+}
+
+/* CONTAINERS */
+.form-container,
+.login-container,
+#register {
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+}
+
+.login-container {
+    text-align: left;
+}
+
+.form-container p,
+.login-container p,
+#register p {
+    margin-bottom: 20px;
+}
+
+/* CAMPOS DE FORMULÁRIO */
+.form-group {
+    margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #999;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+/* BOTÕES */
+input[type="submit"],
+button {
+    padding: 10px 20px;
+    background-color: #5FB04F;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+input[type="submit"]:hover,
+button:hover {
+    background-color: #4a9540;
+}
+
+/* MENSAGENS FLASH */
+.flash.success {
+    color: green;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.flash.danger {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* LABELS */
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* LISTAS */
+ul {
+    list-style: none;
+    text-align: center;
+    margin-top: 10px;
+}
+
+ul li {
+    padding: 10px;
+    font-weight: bold;
+}
+
+/* RODAPÉ FIXO */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    text-align: right;
+    font-size: 14px;
+    color: #969696;
+    background-color: #d2e2cf;
+}
+
+footer a {
+    color: #969696;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: #272727;
+    text-decoration: underline;
+}
+* --- Abas abaixo do mapa --- */
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin: 30px auto 0;
+    gap: 10px;
+    max-width: 1000px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    background-color: #5FB04F;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px 5px 0 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.tab-btn:hover {
+    background-color: #4a9540;
+}
+
+.tab-btn.active {
+    background-color: #3c8933;
+}
+
+/* Conteúdo das abas */
+.tab-content {
+    display: none;
+    background-color: #f9f9f9;
+    padding: 20px 30px;
+    max-width: 1000px;
+    margin: 0 auto 40px;
+    border: 2px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-size: 16px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-content p {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.tab-content strong {
+    color: #333;
+}

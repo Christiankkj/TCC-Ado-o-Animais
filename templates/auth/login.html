@@ -3,46 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <style>
-        .flash.success { color: green; }
-        .flash.danger { color: red; }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+<nav style="margin-bottom: 20px;">
+        {% if current_user.is_authenticated %}
+            <span>Bem-vindo, {{ current_user.nome }}!</span> |
+            <a href="{{ url_for('auth.denunciarAnimais') }}">Denunciar Animal</a> |
+            <a href="{{ url_for('auth.cadastrar_ponto') }}">Cadastrar Ponto de Adoção</a> |
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}">Login</a> |
+            <a href="{{ url_for('auth.register') }}">Cadastro</a>
+        {% endif %}
+    </nav>
 <body>
+    
 
 <h2>Login</h2>
 
-<!-- Mensagens flash -->
-{% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      <div class="flash {{ category }}">{{ message }}</div>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
+<div class="login-container">
+    <h2>Entrar</h2>
 
-<!-- Formulário -->
-<form method="POST" action="{{ url_for('auth.login') }}">
-    {{ form.hidden_tag() }}
-
-    <p>
-        {{ form.email.label }}<br>
-        {{ form.email(size=32) }}<br>
-        {% for error in form.email.errors %}
-            <span style="color: red;">{{ error }}</span>
+    <!-- Mensagens flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
         {% endfor %}
-    </p>
+      {% endif %}
+    {% endwith %}
 
-    <p>
-        {{ form.senha.label }}<br>
-        {{ form.senha(size=32) }}<br>
-        {% for error in form.senha.errors %}
-            <span style="color: red;">{{ error }}</span>
-        {% endfor %}
-    </p>
+    <!-- Formulário -->
+    <form method="POST" action="{{ url_for('auth.login') }}">
+        {{ form.hidden_tag() }}
 
-    <p>{{ form.submit() }}</p>
-</form>
+        <div class="form-group">
+            {{ form.email.label }}
+            {{ form.email(class="form-control") }}
+        </div>
+
+        <div class="form-group">
+            {{ form.senha.label }}
+            {{ form.senha(class="form-control") }}
+        </div>
+
+        <div class="form-group">
+            {{ form.submit(class="form-button full-width") }}
+        </div>
+    </form>
+</div>
 
 </body>
+<footer>
+  <p>Ícones feitos por <a href="https://www.flaticon.com/authors/berkahicon" title="berkahicon">berkahicon</a> de <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
+</footer>
 </html>

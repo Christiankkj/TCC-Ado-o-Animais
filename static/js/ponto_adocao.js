@@ -1,10 +1,21 @@
 const map = L.map('map').setView([-10.505872, -39.018019], 14);
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap'
+    attribution: '© OpenStreetMap'
 }).addTo(map);
 
-// Adicionar denúncias (círculo vermelho com popup)
+let marker;
+
+map.on('click', function(e) {
+    const latlng = e.latlng.lat.toFixed(6) + ',' + e.latlng.lng.toFixed(6);
+    document.getElementById('cordenada').value = latlng;
+
+    if (marker) {
+        map.removeLayer(marker);
+    }
+
+    marker = L.marker(e.latlng).addTo(map);
+});
 denuncias.forEach((denuncia) => {
     const [lat, lng] = denuncia.cordenada.split(',').map(Number);
     const circle = L.circle([lat, lng], {
@@ -40,9 +51,3 @@ pontos.forEach((ponto) => {
         Disponíveis: ${ponto.quantidade_disponivel}
     `);
 });
-
-
-
-
-
-

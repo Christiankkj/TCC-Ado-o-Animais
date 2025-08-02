@@ -31,19 +31,21 @@
     <form method="POST">
         {{ form.hidden_tag() }}
 
-        
+        <label>{{ form.nome_local.label }}<br>
+            {{ form.nome_local() }}
+        </label>
 
         <label>{{ form.tipo_animal.label }}<br>
             {{ form.tipo_animal() }}
         </label>
-        <label>{{ form.quantidade.label }}<br>
-            {{ form.quantidade() }}
-        </label><br>
 
         <label>Coordenada<br>
             {{ form.cordenada(id="cordenada", readonly=True) }}
         </label>
 
+        <label>{{ form.responsavel_contato.label }}<br>
+            {{ form.responsavel_contato() }}
+        </label>
 
         {{ form.submit() }}
     </form>
