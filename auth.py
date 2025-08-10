@@ -1,9 +1,11 @@
 from flask import Blueprint, flash, redirect, render_template, request, session, url_for
+from flask_login import login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import select, text
 from database import SessionLocal
 from models import Usuario, TipoUsuarioEnum
-from forms import LoginForm, RegisterForm
+from forms import LoginForm, RegisterForm,DenunciaForm,PontoAdocaoForm
+from flask_login import current_user, logout_user
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -54,6 +56,8 @@ def register():
     return render_template('auth/register.html', form=form)
 
 
+from flask_login import login_user
+
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -65,20 +69,14 @@ def login():
 
         db = SessionLocal()
         try:
-            result = db.execute(
-                text("SELECT * FROM usuarios WHERE email = :email"),
-                {'email': email}
-            )
-            user = result.mappings().first()
+            user = db.query(Usuario).filter_by(email=email).first()
 
             if user is None:
                 error = 'Email não encontrado.'
-            elif not check_password_hash(user['senha'], senha):
+            elif not check_password_hash(user.senha, senha):
                 error = 'Senha incorreta.'
             else:
-                session.clear()
-                session['email'] = user['email']
-                session['user_id'] = user.id
+                login_user(user)
                 flash('Login realizado com sucesso!', 'success')
                 return redirect(url_for('home'))
 
@@ -93,5 +91,99 @@ def login():
 
 @bp.route('/logout')
 def logout():
+    logout_user()
     session.clear()
     return redirect(url_for('home'))
+
+@bp.route('/denunciar', methods=['GET', 'POST'])
+@login_required
+def denunciarAnimais():
+    form = DenunciaForm()
+    error = None
+    db = SessionLocal()
+    try:
+        # Transforma RowMapping em dicionário com list comprehension
+        denuncias = [dict(row) for row in db.execute(text("SELECT * FROM denuncia_animais")).mappings().all()]
+        pontos = [dict(row) for row in db.execute(text("SELECT * FROM ponto_adocao")).mappings().all()]
+    finally:
+        db.close()    
+    if form.validate_on_submit():
+        tipo_animal = form.tipo_animal.data
+        coordenada = form.cordenada.data
+        quantidade = form.quantidade.data
+        id_usuario = current_user.id
+        
+
+        
+        try:
+            db.execute(
+                text("""
+                    INSERT INTO denuncia_animais (tipo_animal, quantidade, cordenada, id_usuario)
+                    VALUES (:tipo_animal, :quantidade, :coordenada, :id_usuario)
+                """),
+                {
+                    'tipo_animal': tipo_animal,
+                    'quantidade': quantidade,
+                    'coordenada': coordenada,
+                    'id_usuario': id_usuario
+                }
+            )
+            db.commit()
+            flash('Denúncia registrada com sucesso!', 'success')
+            return redirect(url_for('map'))
+        except Exception as e:
+            db.rollback()
+            error = f"Erro ao registrar denúncia: {str(e)}"
+            flash(error, 'danger')
+        finally:
+            db.close()
+    return render_template('auth/denunciar.html', form=form,denuncias=denuncias, pontos=pontos)
+
+
+@bp.route('/cadastrar_ponto', methods=['GET', 'POST'])
+@login_required
+def cadastrar_ponto():
+    form = PontoAdocaoForm()
+    error = None
+    db = SessionLocal()
+    try:
+        # Transforma RowMapping em dicionário com list comprehension
+        denuncias = [dict(row) for row in db.execute(text("SELECT * FROM denuncia_animais")).mappings().all()]
+        pontos = [dict(row) for row in db.execute(text("SELECT * FROM ponto_adocao")).mappings().all()]
+    finally:
+        db.close() 
+    if form.validate_on_submit():
+        nome_local = form.nome_local.data
+        tipo_animal = form.tipo_animal.data
+        cordenada = form.cordenada.data
+        responsavel_contato = form.responsavel_contato.data
+        id_usuario = current_user.id
+
+        db = SessionLocal()
+        try:
+            denuncias = [dict(row) for row in db.execute(text("SELECT * FROM denuncia_animais")).mappings().all()]
+            pontos = [dict(row) for row in db.execute(text("SELECT * FROM ponto_adocao")).mappings().all()]
+            db.execute(
+                text("""
+                    INSERT INTO ponto_adocao (nome_local, tipo_animal, quantidade_disponivel, responsavel_contato, cordenada, id_usuario)
+                    VALUES (:nome_local, :tipo_animal, 0, :responsavel_contato, :cordenada, :id_usuario)
+                """),
+                {
+                    'nome_local': nome_local,
+                    'tipo_animal': tipo_animal,
+                    'responsavel_contato': responsavel_contato,
+                    'cordenada': cordenada,
+                    'id_usuario': id_usuario
+                }
+            )
+            db.commit()
+            flash('Ponto de adoção cadastrado com sucesso!', 'success')
+            return redirect(url_for('home'))
+        except Exception as e:
+            db.rollback()
+            error = f"Erro ao cadastrar ponto: {str(e)}"
+            flash(error, 'danger')
+        finally:
+            db.close()
+
+    return render_template('auth/cadastrar_ponto.html', form=form,denuncias=denuncias, pontos=pontos)

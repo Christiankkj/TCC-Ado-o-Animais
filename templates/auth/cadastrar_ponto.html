@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Ponto de Adoção</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+</head>
+<body>
+
+<nav class="top-nav">
+    {% if current_user.is_authenticated %}
+        <span>Bem-vindo, {{ current_user.nome }}!</span> |
+        <a href="{{ url_for('auth.denunciarAnimais') }}">Denunciar Animal</a> |
+        <a href="{{ url_for('auth.cadastrar_ponto') }}">Cadastrar Ponto de Adoção</a> |
+        <a href="{{ url_for('auth.logout') }}">Logout</a>
+    {% else %}
+        <a href="{{ url_for('auth.login') }}">Login</a> |
+        <a href="{{ url_for('auth.register') }}">Cadastro</a>
+    {% endif %}
+</nav>
+
+<main>
+    <h2>Cadastrar Ponto de Adoção</h2>
+
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <label>{{ form.nome_local.label }}<br>
+            {{ form.nome_local() }}
+        </label>
+
+        <label>{{ form.tipo_animal.label }}<br>
+            {{ form.tipo_animal() }}
+        </label>
+
+        <label>Coordenada<br>
+            {{ form.cordenada(id="cordenada", readonly=True) }}
+        </label>
+
+        <label>{{ form.responsavel_contato.label }}<br>
+            {{ form.responsavel_contato() }}
+        </label>
+
+        {{ form.submit() }}
+    </form>
+    <script>
+        const denuncias = {{ denuncias | tojson }};
+        const pontos = {{ pontos | tojson }};
+    </script>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='js/ponto_adocao.js') }}"></script>
+
+<footer>
+    <p>Ícones por <a href="https://www.flaticon.com/authors/berkahicon" title="berkahicon">berkahicon</a> de <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
+</footer>
+
+</body>
+</html>
+

@@ -1,22 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adoção de animais</title>
+    <title>Início - Sistema de Adoção</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 </head>
 <body>
-    <header>
-    <h1>ADOÇAO DE ANIMAIS</h1>
-    <div class="auth-links">
-        {% if g.user %}
-            <span>Olá, {{ g.user['nome'] }}</span>
-            <a href="{{ url_for('auth.logout') }}">Sair</a>
+
+    <nav>
+        {% if current_user.is_authenticated %}
+            <span>Bem-vindo, {{ current_user.nome }}!</span> |
+            <a href="{{ url_for('sobre') }}">Sobre nós</a> |
+            <a href="{{ url_for('auth.denunciarAnimais') }}">Denunciar Animal</a> |
+            <a href="{{ url_for('auth.cadastrar_ponto') }}">Cadastrar Ponto de Adoção</a> |
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
         {% else %}
-            <a href="{{ url_for('auth.login') }}">Login</a>
-            <a href="{{ url_for('auth.register') }}">Sign In</a>
+            <a href="{{ url_for('sobre') }}">Sobre nós</a> |
+            <a href="{{ url_for('auth.login') }}">Login</a> |
+            <a href="{{ url_for('auth.register') }}">Cadastro</a>
         {% endif %}
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul>
+          {% for category, message in messages %}
+            <li class="flash {{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <h1>Bem-vindo ao sistema de Adoção e Denúncia de Animais</h1>
+
+    <div id="map"></div>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="denuncias">Denúncias</button>
+        <button class="tab-btn" data-tab="adocoes">Pontos de Adoção</button>
     </div>
-</header>
+   
+<section id="denuncias" class="tab-content active">
+  <div class="cards-container">
+    {% for d in denuncias %}
+      <div class="card-item">
+        <strong>Animal:</strong> {{ d.tipo_animal }} |
+        <strong>Qtd:</strong> {{ d.quantidade }} |
+        <strong>Coordenada:</strong> 
+        <a href="#" class="coord-link" data-lat="{{ d.cordenada.split(',')[0] }}" data-lng="{{ d.cordenada.split(',')[1] }}">
+          {{ d.cordenada }}
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="adocoes" class="tab-content">
+  <div class="cards-container">
+    {% for p in pontos %}
+      <div class="card-item">
+        <strong>Local:</strong> {{ p.nome_local }} |
+        <strong>Animal:</strong> {{ p.tipo_animal }} |
+        <strong>Qtd disponível:</strong> {{ p.quantidade_disponivel }} |
+        <strong>Coordenada:</strong> 
+        <a href="#" class="coord-link" data-lat="{{ p.cordenada.split(',')[0] }}" data-lng="{{ p.cordenada.split(',')[1] }}">
+          {{ p.cordenada }}
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+    <script>
+        const denuncias = {{ denuncias | tojson }};
+        const pontos = {{ pontos | tojson }};
+    </script>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="{{ url_for('static', filename='js/mapa.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tabs.js') }}"></script>
+
 </body>
+<footer>
+  <p>Ícones feitos por <a href="https://www.flaticon.com/authors/berkahicon" title="berkahicon">berkahicon</a>
+     de <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
+</footer>
 </html>

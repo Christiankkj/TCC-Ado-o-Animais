@@ -3,7 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Registro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+<nav style="margin-bottom: 20px;">
+        {% if current_user.is_authenticated %}
+            <span>Bem-vindo, {{ current_user.nome }}!</span> |
+            <a href="{{ url_for('auth.denunciarAnimais') }}">Denunciar Animal</a> |
+            <a href="{{ url_for('auth.cadastrar_ponto') }}">Cadastrar Ponto de Adoção</a> |
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}">Login</a> |
+            <a href="{{ url_for('auth.register') }}">Cadastro</a>
+        {% endif %}
+    </nav>
 <body>
 
 <h2>Registro</h2>
@@ -16,7 +28,7 @@
     {% endfor %}
   {% endif %}
 {% endwith %}
-
+<div id = "register">
 <form method="POST" action=" = {{url_for('auth.register')}}">
     {{ form.hidden_tag() }}
 
@@ -27,7 +39,7 @@
             <span style="color: red;">{{ error }}</span>
         {% endfor %}
     </p>
-
+    
     <p>
         {{ form.nome.label }}<br>
         {{ form.nome() }}<br>
@@ -36,10 +48,11 @@
         {% endfor %}
     </p>
 
-    <p>
-        {{ form.nome_dono.label }}<br>
-        {{ form.nome_dono() }}
+    <p id="nome-dono">
+    {{ form.nome_dono.label }}<br>
+    {{ form.nome_dono() }}
     </p>
+
 
     <p>
         {{ form.email.label }}<br>
@@ -61,7 +74,27 @@
 </form>
 
 <p>Já tem uma conta? <a href="{{ url_for('auth.login') }}">Login</a></p>
-
+</div>
 </body>
+<footer>
+  <p>Ícones feitos por <a href="https://www.flaticon.com/authors/berkahicon" title="berkahicon">berkahicon</a> de <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
+</footer>
 </html>
+<script>
+    const tipoSelect = document.querySelector('select[name="tipo"]');
+    const nomeDonoCampo = document.getElementById('nome-dono');
+
+    function verificarTipo() {
+        const tipo = tipoSelect.value;
+        if (tipo.toLowerCase() === 'pessoa') {
+            nomeDonoCampo.style.display = 'none';
+        } else {
+            nomeDonoCampo.style.display = '';
+        }
+    }
+
+ 
+    verificarTipo();
+    tipoSelect.addEventListener('change', verificarTipo);
+</script>
 

@@ -1,0 +1,419 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BASE */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* NAVBAR */
+nav {
+    background-color: #5FB04F;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+    color: white;
+    font-weight: bold;
+    flex-wrap: wrap;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    transition: background-color 0.3s ease;
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+/* TÍTULOS */
+h1, h2 {
+    text-align: center;
+    margin: 30px 0;
+}
+
+/* MAPA */
+#map {
+    width: 90%;
+    max-width: 1200px;
+    height: 600px;
+    max-height: 80vh;
+    margin: 0 auto 40px;
+    border: 10px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Negrito com destaque */
+.tab-content strong {
+    color: #333;
+}
+
+/* FORMULÁRIO DE PONTO DE ADOÇÃO BONITO */
+form {
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto 50px;
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+    display: block;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+form input,
+form select {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fdfdfd;
+    transition: border 0.2s;
+}
+
+form input:focus,
+form select:focus {
+    border-color: #5FB04F;
+    outline: none;
+    box-shadow: 0 0 4px rgba(95, 176, 79, 0.5);
+}
+
+form input[readonly] {
+    background-color: #f3f3f3;
+    color: #555;
+}
+
+form input[type="submit"] {
+    margin-top: 30px;
+}
+
+/* ÁREA DO FORMULÁRIO CENTRALIZADA */
+.form-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    min-height: 70vh;
+}
+
+/* CONTAINERS */
+.form-container,
+.login-container,
+#register {
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+}
+
+.login-container {
+    text-align: left;
+}
+
+.form-container p,
+.login-container p,
+#register p {
+    margin-bottom: 20px;
+}
+
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f9f9f9;
+}
+
+/* CAMPOS DE FORMULÁRIO */
+.form-group {
+    margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #999;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+/* BOTÕES */
+input[type="submit"],
+button {
+    padding: 10px 20px;
+    background-color: #5FB04F;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+input[type="submit"]:hover,
+button:hover {
+    background-color: #4a9540;
+}
+
+/* MENSAGENS FLASH */
+.flash.success {
+    color: green;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.flash.danger {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* LABELS */
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* LISTAS */
+ul {
+    list-style: none;
+    text-align: center;
+    margin-top: 10px;
+}
+
+ul li {
+    padding: 10px;
+    font-weight: bold;
+}
+
+/* RODAPÉ FIXO */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    text-align: right;
+    font-size: 14px;
+    color: #969696;
+    background-color: #d2e2cf;
+}
+
+footer a {
+    color: #969696;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: #272727;
+    text-decoration: underline;
+}
+
+/* --- Abas abaixo do mapa --- */
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin: 30px auto 10px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    background-color: #ccc;
+    border: none;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px 5px 0 0;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s;
+    white-space: nowrap;
+}
+
+.tab-btn:hover {
+    background-color: #bbb;
+}
+
+.tab-btn.active {
+    background-color: #5FB04F;
+    color: white;
+}
+
+.tab-content {
+    display: none;
+    max-width: 900px;
+    margin: 0 auto 40px;
+    background-color: white;
+    padding: 30px 40px;
+    border: 2px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Estilo para cada item listado no tab-content */
+.tab-content .card-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-size: 16px;
+    line-height: 1.5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.tab-content .card-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+}
+
+.tab-content .card-item strong {
+    color: #333;
+}
+
+.cards-container {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* Scroll mais elegante */
+.cards-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.cards-container::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 4px;
+}
+
+.cards-container::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+
+/* ======= MEDIA QUERIES ======= */
+@media (max-width: 900px) {
+    #map {
+        width: 95%;
+        height: 450px;
+        max-width: none;
+        border-width: 8px;
+    }
+
+    form {
+        width: 95%;
+        padding: 25px 30px;
+    }
+
+    .tab-content {
+        padding: 25px 30px;
+        max-width: 95%;
+        margin-bottom: 30px;
+    }
+
+    .cards-container {
+        max-height: 250px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 600px) {
+    nav {
+        justify-content: center;
+        padding: 10px 15px;
+        gap: 10px;
+    }
+
+    nav a {
+        padding: 4px 8px;
+        font-size: 14px;
+    }
+
+    #map {
+  width: 100%;
+  max-width: 1200px;
+  height: 60vh; /* 60% da altura da viewport */
+  max-height: 600px;
+  margin: 0 auto 40px;
+  border: 10px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    form {
+        width: 100%;
+        padding: 20px 20px;
+    }
+
+    .tab-btn {
+        font-size: 14px;
+        padding: 8px 15px;
+        flex: 1 1 auto;
+        text-align: center;
+    }
+
+    .tabs {
+        gap: 5px;
+    }
+
+    .tab-content {
+        padding: 20px 15px;
+        max-width: 100%;
+        margin-bottom: 25px;
+    }
+
+    .cards-container {
+        max-height: 200px;
+        padding: 6px;
+    }
+
+    .tab-content .card-item {
+        font-size: 14px;
+        padding: 12px 15px;
+    }
+}
