@@ -10,18 +10,42 @@
 <body>
      <nav>
         {% if current_user.is_authenticated %}
-            <span>Bem-vindo, {{ current_user.nome }}!</span> |
-            <a href="{{ url_for('sobre') }}">Sobre nós</a> |
-            <a href="{{ url_for('auth.denunciarAnimais') }}">Denunciar Animal</a> |
-            <a href="{{ url_for('auth.cadastrar_ponto') }}">Cadastrar Ponto de Adoção</a> |
+            <span>Bem-vindo, {{ current_user.nome }}!</span>  |
+            <a href="{{ url_for('home') }}">Inicio</a>  |
+            <a href="{{ url_for('sobre') }}">Sobre nós</a>  |
+            <a href="{{ url_for('auth.denunciarAnimais') }}">Denunciar Animal</a>  |
+            <a href="{{ url_for('auth.cadastrar_ponto') }}">Cadastrar Ponto de Adoção</a>  |
             <a href="{{ url_for('auth.logout') }}">Logout</a>
         {% else %}
-            <a href="{{ url_for('sobre') }}">Sobre nós</a> |
-            <a href="{{ url_for('auth.login') }}">Login</a> |
+            <a href="{{ url_for('sobre') }}">Sobre nós</a>  |
+            <a href="{{ url_for('auth.login') }}">Login</a>  |
             <a href="{{ url_for('auth.register') }}">Cadastro</a>
         {% endif %}
     </nav>
+    <div>
+           <section>
+        <p>
+            Este site foi desenvolvido como parte do nosso Trabalho de Conclusão de Curso (TCC), com o objetivo central de contribuir para o bem-estar animal em nossa cidade, promovendo a denúncia de animais em situação de rua e facilitando o cadastro de pontos de adoção. A iniciativa nasce da preocupação crescente com o abandono e o sofrimento dos animais, e da necessidade de criar ferramentas digitais que ajudem a conectar a comunidade com órgãos responsáveis e pessoas interessadas em oferecer um lar digno para esses animais.
+        </p>
 
+        <p>
+            A plataforma permite que qualquer cidadão possa, de forma rápida e simples, denunciar situações de abandono, maus-tratos ou animais em risco nas ruas, trazendo visibilidade para esses casos e possibilitando uma ação mais eficiente por parte das autoridades e ONGs locais. Além disso, o site oferece um sistema para cadastro e consulta de pontos de adoção na cidade, facilitando o encontro entre animais que precisam de um lar e pessoas que desejam adotá-los.
+        </p>
+
+        <p>
+            Entendemos que a situação dos animais em situação de rua é um problema complexo e que envolve fatores sociais, econômicos e culturais. Por isso, nosso projeto busca ir além da simples denúncia, promovendo a conscientização sobre a importância da adoção responsável, da castração e do cuidado adequado com os animais. Através de uma interface acessível e amigável, esperamos mobilizar a comunidade para a participação ativa na solução desse problema.
+        </p>
+
+        <p>
+            Ao centralizar as informações e facilitar o contato entre denunciante, adotantes, ONGs e órgãos públicos, nosso site atua como um canal de comunicação eficiente, contribuindo para a criação de uma rede solidária em prol dos animais vulneráveis. Acreditamos que a tecnologia pode ser uma grande aliada na construção de uma cidade mais justa e cuidadosa com seus animais, e este projeto é nossa contribuição para essa transformação.
+        </p>
+
+        <p>
+            Por fim, reforçamos o compromisso com a ética, a transparência e o respeito a todas as formas de vida. Este site é resultado do empenho e da dedicação de nossa equipe, que deseja causar um impacto positivo real na comunidade, transformando denúncias em ações concretas e promovendo a adoção como uma prática consciente e amorosa.
+        </p>
+    </section>
+
+    </div>
 
     <footer>
   <p>Ícones feitos por <a href="https://www.flaticon.com/authors/berkahicon" title="berkahicon">berkahicon</a>

@@ -11,14 +11,14 @@
 
     <nav>
         {% if current_user.is_authenticated %}
-            <span>Bem-vindo, {{ current_user.nome }}!</span> |
-            <a href="{{ url_for('sobre') }}">Sobre nós</a> |
-            <a href="{{ url_for('auth.denunciarAnimais') }}">Denunciar Animal</a> |
-            <a href="{{ url_for('auth.cadastrar_ponto') }}">Cadastrar Ponto de Adoção</a> |
+            <span>Bem-vindo, {{ current_user.nome }}!</span>  |
+            <a href="{{ url_for('sobre') }}">Sobre nós</a>  |
+            <a href="{{ url_for('auth.denunciarAnimais') }}">Denunciar Animal</a>  |
+            <a href="{{ url_for('auth.cadastrar_ponto') }}">Cadastrar Ponto de Adoção</a>  |
             <a href="{{ url_for('auth.logout') }}">Logout</a>
         {% else %}
-            <a href="{{ url_for('sobre') }}">Sobre nós</a> |
-            <a href="{{ url_for('auth.login') }}">Login</a> |
+            <a href="{{ url_for('sobre') }}">Sobre nós</a>  |
+            <a href="{{ url_for('auth.login') }}">Login</a>  |
             <a href="{{ url_for('auth.register') }}">Cadastro</a>
         {% endif %}
     </nav>
@@ -35,7 +35,9 @@
 
     <h1>Bem-vindo ao sistema de Adoção e Denúncia de Animais</h1>
 
+    <div id="map-container">
     <div id="map"></div>
+  </div>
 
     <div class="tabs">
         <button class="tab-btn active" data-tab="denuncias">Denúncias</button>
@@ -61,18 +63,25 @@
   <div class="cards-container">
     {% for p in pontos %}
       <div class="card-item">
-        <strong>Local:</strong> {{ p.nome_local }} |
-        <strong>Animal:</strong> {{ p.tipo_animal }} |
-        <strong>Qtd disponível:</strong> {{ p.quantidade_disponivel }} |
-        <strong>Coordenada:</strong> 
-        <a href="#" class="coord-link" data-lat="{{ p.cordenada.split(',')[0] }}" data-lng="{{ p.cordenada.split(',')[1] }}">
-          {{ p.cordenada }}
-        </a>
+        <div class="local-name" data-lat="{{ p.cordenada.split(',')[0] }}" data-lng="{{ p.cordenada.split(',')[1] }}">
+          <a href="#" class="coord-link" data-lat="{{ p.cordenada.split(',')[0] }}" data-lng="{{ p.cordenada.split(',')[1] }}">
+          {{ p.nome_local }}
+          </a>
+        </div>
+        <div class="card-details">
+          <div><strong>Animal:</strong> {{ p.tipo_animal }}</div>
+          <div><strong>Qtd disponível:</strong> {{ p.quantidade_disponivel }}</div>
+          <div>
+            <strong>Coordenada:</strong> 
+            <a href="#" class="coord-link" data-lat="{{ p.cordenada.split(',')[0] }}" data-lng="{{ p.cordenada.split(',')[1] }}">
+              {{ p.cordenada }}
+            </a>
+          </div>
+        </div>
       </div>
     {% endfor %}
   </div>
 </section>
-
     <script>
         const denuncias = {{ denuncias | tojson }};
         const pontos = {{ pontos | tojson }};

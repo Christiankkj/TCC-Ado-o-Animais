@@ -11,46 +11,50 @@
 
 <nav class="top-nav">
     {% if current_user.is_authenticated %}
-        <span>Bem-vindo, {{ current_user.nome }}!</span> |
-        <a href="{{ url_for('auth.denunciarAnimais') }}">Denunciar Animal</a> |
-        <a href="{{ url_for('auth.cadastrar_ponto') }}">Cadastrar Ponto de Adoção</a> |
+        <span>Bem-vindo, {{ current_user.nome }}!</span>  |
+        <a href="{{ url_for('home') }}">Inicio</a>  |
+        <a href="{{ url_for('auth.denunciarAnimais') }}">Denunciar Animal</a>  |
+        <a href="{{ url_for('auth.cadastrar_ponto') }}">Cadastrar Ponto de Adoção</a>  |
         <a href="{{ url_for('auth.logout') }}">Logout</a>
     {% else %}
-        <a href="{{ url_for('auth.login') }}">Login</a> |
+        <a href="{{ url_for('auth.login') }}">Login</a>  |
         <a href="{{ url_for('auth.register') }}">Cadastro</a>
     {% endif %}
 </nav>
 
-<main>
-    <h2>Cadastrar Ponto de Adoção</h2>
+<main class="denuncia-container">
+  <h2>Denúncia de Animais</h2>
 
-    <div id="map-container">
-        <div id="map"></div>
-    </div>
+  <div id="map-container">
+    <div id="map"></div>
+  </div>
 
-    <form method="POST">
-        {{ form.hidden_tag() }}
+  <form class="denuncia-form" method="POST">
+    {{ form.hidden_tag() }}
 
-        
+    <label>
+      {{ form.tipo_animal.label }}
+      {{ form.tipo_animal() }}
+      {% if form.tipo_animal.errors %}
+        <span class="error-message">{{ form.tipo_animal.errors[0] }}</span>
+      {% endif %}
+    </label>
 
-        <label>{{ form.tipo_animal.label }}<br>
-            {{ form.tipo_animal() }}
-        </label>
-        <label>{{ form.quantidade.label }}<br>
-            {{ form.quantidade() }}
-        </label><br>
+    <label>
+      {{ form.quantidade.label }}
+      {{ form.quantidade() }}
+      {% if form.quantidade.errors %}
+        <span class="error-message">{{ form.quantidade.errors[0] }}</span>
+      {% endif %}
+    </label>
 
-        <label>Coordenada<br>
-            {{ form.cordenada(id="cordenada", readonly=True) }}
-        </label>
+    <label>
+      Coordenada
+      {{ form.cordenada(id="cordenada", readonly=True) }}
+    </label>
 
-
-        {{ form.submit() }}
-    </form>
-    <script>
-        const denuncias = {{ denuncias | tojson }};
-        const pontos = {{ pontos | tojson }};
-    </script>
+    <button type="submit" class="submit-btn">Enviar Denúncia</button>
+  </form>
 </main>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
