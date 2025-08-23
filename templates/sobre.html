@@ -2,30 +2,116 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Início - Sistema de Adoção</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nós - Sistema de Adoção</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 </head>
 <body>
-     <nav>
+    <nav class="top-nav">
         {% if current_user.is_authenticated %}
-            <span>Bem-vindo, {{ current_user.nome }}!</span> |
-            <a href="{{ url_for('sobre') }}">Sobre nós</a> |
-            <a href="{{ url_for('auth.denunciarAnimais') }}">Denunciar Animal</a> |
-            <a href="{{ url_for('auth.cadastrar_ponto') }}">Cadastrar Ponto de Adoção</a> |
+            <span>Bem-vindo, {{ current_user.nome }}!</span>  |
+            <a href="{{ url_for('home') }}">Inicio</a>  |
+            <a href="{{ url_for('sobre') }}">Sobre nós</a>  |
+            <a href="{{ url_for('auth.denunciarAnimais') }}">Denunciar Animal</a>  |
+            <a href="{{ url_for('auth.cadastrar_ponto') }}">Cadastrar Ponto de Adoção</a>  |
             <a href="{{ url_for('auth.logout') }}">Logout</a>
         {% else %}
-            <a href="{{ url_for('sobre') }}">Sobre nós</a> |
-            <a href="{{ url_for('auth.login') }}">Login</a> |
+            <a href="{{ url_for('home') }}">Inicio</a>  |
+            <a href="{{ url_for('sobre') }}">Sobre nós</a>  |
+            <a href="{{ url_for('auth.login') }}">Login</a>  |
             <a href="{{ url_for('auth.register') }}">Cadastro</a>
         {% endif %}
     </nav>
 
+    <div class="about-hero">
+        <h1>Sobre Nós</h1>
+        <p>Conectando animais em situação de vulnerabilidade a pessoas dispostas a fazer a diferença</p>
+    </div>
+
+    <div class="about-content">
+        <section class="mission-section">
+            <div class="mission-text">
+                <h2>Nossa Missão</h2>
+                <p>Nosso projeto nasceu da necessidade urgente de abordar o problema dos animais em situação de rua em nossa cidade. A cada dia, centenas de cães e gatos sofrem com abandono, fome e maus-tratos, sem acesso a cuidados básicos ou a um lar digno.</p>
+                <p>Desenvolvemos esta plataforma como parte do nosso Trabalho de Conclusão de Curso, com o objetivo de criar uma ponte entre animais necessitados, protetores independentes, ONGs e potenciais adotantes. Acreditamos que a tecnologia pode ser uma poderosa aliada na construção de uma sociedade mais consciente e compassiva com os animais.</p>
+            </div>
+            <div class="mission-image">
+                <i class="fas fa-paw"></i>
+            </div>
+        </section>
+
+        <section class="values-section">
+            <h2>Nossos Valores</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <i class="fas fa-heart"></i>
+                    <h3>Compaixão</h3>
+                    <p>Agimos movidos pelo respeito e cuidado com todas as formas de vida, entendendo que cada animal merece dignidade e proteção.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-handshake"></i>
+                    <h3>Responsabilidade</h3>
+                    <p>Promovemos a posse responsável e consciente, educando sobre os compromissos de cuidar de um animal de estimação.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Colaboração</h3>
+                    <p>Acreditamos que somente unindo forças entre sociedade, poder público e ONGs podemos resolver este problema complexo.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Inovação</h3>
+                    <p>Utilizamos a tecnologia como ferramenta para criar soluções eficientes e acessíveis para o bem-estar animal.</p>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="team-section">
+            <h2>Nossa Equipe</h2>
+            <p>Somos um grupo de estudantes dedicados que acredita no poder da tecnologia para transformar realidades:</p>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-image">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="member-info">
+                        <h3>Álvaro Dantas </h3>
+                        <div class="member-role">Desenvolvedor Front-end</div>
+                        <p>Responsável pela experiência do usuário e design da plataforma.</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-image">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="member-info">
+                        <h3>Christian Silva</h3>
+                        <div class="member-role">Desenvolvedor Back-end</div>
+                        <p>Encarregado da lógica de negócios e integração de sistemas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <h2>Junte-se a Nossa Causa</h2>
+            <p>Você também pode fazer a diferença na vida de animais necessitados. Participe dessa rede do bem!</p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('auth.register') }}" class="cta-button primary">Criar uma Conta</a>
+                <a href="{{ url_for('auth.denunciarAnimais') }}" class="cta-button secondary">Fazer uma Denúncia</a>
+                <a href="{{ url_for('auth.cadastrar_ponto') }}" class="cta-button secondary">Cadastrar Ponto de Apoio</a>
+            </div>
+        </section>
+    </div>
 
     <footer>
-  <p>Ícones feitos por <a href="https://www.flaticon.com/authors/berkahicon" title="berkahicon">berkahicon</a>
-     de <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
-</footer>
+        <p>Ícones feitos por <a href="https://www.flaticon.com/authors/berkahicon" title="berkahicon">berkahicon</a>
+        de <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
+        <p>Projeto desenvolvido como parte do TCC em Análise e Desenvolvimento de Sistemas - 2023</p>
+    </footer>
 </body>
 </html>
