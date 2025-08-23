@@ -5,14 +5,17 @@
     <title>Login</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<nav style="margin-bottom: 20px;">
+<nav class="top-nav">
         {% if current_user.is_authenticated %}
             <span>Bem-vindo, {{ current_user.nome }}!</span>  |
             <a href="{{ url_for('home') }}">Inicio</a>  |
+            <a href="{{ url_for('sobre') }}">Sobre nós</a>  |
             <a href="{{ url_for('auth.denunciarAnimais') }}">Denunciar Animal</a>  |
             <a href="{{ url_for('auth.cadastrar_ponto') }}">Cadastrar Ponto de Adoção</a>  |
             <a href="{{ url_for('auth.logout') }}">Logout</a>
         {% else %}
+            <a href="{{ url_for('home') }}">Inicio</a>  |
+            <a href="{{ url_for('sobre') }}">Sobre nós</a>  |
             <a href="{{ url_for('auth.login') }}">Login</a>  |
             <a href="{{ url_for('auth.register') }}">Cadastro</a>
         {% endif %}
@@ -59,6 +62,7 @@
         </form>
     </div>
 </div>
+
 
 </body>
 <footer>

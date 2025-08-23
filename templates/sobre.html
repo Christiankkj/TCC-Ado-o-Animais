@@ -2,13 +2,15 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Início - Sistema de Adoção</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nós - Sistema de Adoção</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 </head>
 <body>
-     <nav>
+    <nav class="top-nav">
         {% if current_user.is_authenticated %}
             <span>Bem-vindo, {{ current_user.nome }}!</span>  |
             <a href="{{ url_for('home') }}">Inicio</a>  |
@@ -17,39 +19,99 @@
             <a href="{{ url_for('auth.cadastrar_ponto') }}">Cadastrar Ponto de Adoção</a>  |
             <a href="{{ url_for('auth.logout') }}">Logout</a>
         {% else %}
+            <a href="{{ url_for('home') }}">Inicio</a>  |
             <a href="{{ url_for('sobre') }}">Sobre nós</a>  |
             <a href="{{ url_for('auth.login') }}">Login</a>  |
             <a href="{{ url_for('auth.register') }}">Cadastro</a>
         {% endif %}
     </nav>
-    <div>
-           <section>
-        <p>
-            Este site foi desenvolvido como parte do nosso Trabalho de Conclusão de Curso (TCC), com o objetivo central de contribuir para o bem-estar animal em nossa cidade, promovendo a denúncia de animais em situação de rua e facilitando o cadastro de pontos de adoção. A iniciativa nasce da preocupação crescente com o abandono e o sofrimento dos animais, e da necessidade de criar ferramentas digitais que ajudem a conectar a comunidade com órgãos responsáveis e pessoas interessadas em oferecer um lar digno para esses animais.
-        </p>
 
-        <p>
-            A plataforma permite que qualquer cidadão possa, de forma rápida e simples, denunciar situações de abandono, maus-tratos ou animais em risco nas ruas, trazendo visibilidade para esses casos e possibilitando uma ação mais eficiente por parte das autoridades e ONGs locais. Além disso, o site oferece um sistema para cadastro e consulta de pontos de adoção na cidade, facilitando o encontro entre animais que precisam de um lar e pessoas que desejam adotá-los.
-        </p>
+    <div class="about-hero">
+        <h1>Sobre Nós</h1>
+        <p>Conectando animais em situação de vulnerabilidade a pessoas dispostas a fazer a diferença</p>
+    </div>
 
-        <p>
-            Entendemos que a situação dos animais em situação de rua é um problema complexo e que envolve fatores sociais, econômicos e culturais. Por isso, nosso projeto busca ir além da simples denúncia, promovendo a conscientização sobre a importância da adoção responsável, da castração e do cuidado adequado com os animais. Através de uma interface acessível e amigável, esperamos mobilizar a comunidade para a participação ativa na solução desse problema.
-        </p>
+    <div class="about-content">
+        <section class="mission-section">
+            <div class="mission-text">
+                <h2>Nossa Missão</h2>
+                <p>Nosso projeto nasceu da necessidade urgente de abordar o problema dos animais em situação de rua em nossa cidade. A cada dia, centenas de cães e gatos sofrem com abandono, fome e maus-tratos, sem acesso a cuidados básicos ou a um lar digno.</p>
+                <p>Desenvolvemos esta plataforma como parte do nosso Trabalho de Conclusão de Curso, com o objetivo de criar uma ponte entre animais necessitados, protetores independentes, ONGs e potenciais adotantes. Acreditamos que a tecnologia pode ser uma poderosa aliada na construção de uma sociedade mais consciente e compassiva com os animais.</p>
+            </div>
+            <div class="mission-image">
+                <i class="fas fa-paw"></i>
+            </div>
+        </section>
 
-        <p>
-            Ao centralizar as informações e facilitar o contato entre denunciante, adotantes, ONGs e órgãos públicos, nosso site atua como um canal de comunicação eficiente, contribuindo para a criação de uma rede solidária em prol dos animais vulneráveis. Acreditamos que a tecnologia pode ser uma grande aliada na construção de uma cidade mais justa e cuidadosa com seus animais, e este projeto é nossa contribuição para essa transformação.
-        </p>
+        <section class="values-section">
+            <h2>Nossos Valores</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <i class="fas fa-heart"></i>
+                    <h3>Compaixão</h3>
+                    <p>Agimos movidos pelo respeito e cuidado com todas as formas de vida, entendendo que cada animal merece dignidade e proteção.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-handshake"></i>
+                    <h3>Responsabilidade</h3>
+                    <p>Promovemos a posse responsável e consciente, educando sobre os compromissos de cuidar de um animal de estimação.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Colaboração</h3>
+                    <p>Acreditamos que somente unindo forças entre sociedade, poder público e ONGs podemos resolver este problema complexo.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Inovação</h3>
+                    <p>Utilizamos a tecnologia como ferramenta para criar soluções eficientes e acessíveis para o bem-estar animal.</p>
+                </div>
+            </div>
+        </section>
 
-        <p>
-            Por fim, reforçamos o compromisso com a ética, a transparência e o respeito a todas as formas de vida. Este site é resultado do empenho e da dedicação de nossa equipe, que deseja causar um impacto positivo real na comunidade, transformando denúncias em ações concretas e promovendo a adoção como uma prática consciente e amorosa.
-        </p>
-    </section>
 
+        <section class="team-section">
+            <h2>Nossa Equipe</h2>
+            <p>Somos um grupo de estudantes dedicados que acredita no poder da tecnologia para transformar realidades:</p>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-image">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="member-info">
+                        <h3>Álvaro Dantas </h3>
+                        <div class="member-role">Desenvolvedor Front-end</div>
+                        <p>Responsável pela experiência do usuário e design da plataforma.</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-image">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="member-info">
+                        <h3>Christian Silva</h3>
+                        <div class="member-role">Desenvolvedor Back-end</div>
+                        <p>Encarregado da lógica de negócios e integração de sistemas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <h2>Junte-se a Nossa Causa</h2>
+            <p>Você também pode fazer a diferença na vida de animais necessitados. Participe dessa rede do bem!</p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('auth.register') }}" class="cta-button primary">Criar uma Conta</a>
+                <a href="{{ url_for('auth.denunciarAnimais') }}" class="cta-button secondary">Fazer uma Denúncia</a>
+                <a href="{{ url_for('auth.cadastrar_ponto') }}" class="cta-button secondary">Cadastrar Ponto de Apoio</a>
+            </div>
+        </section>
     </div>
 
     <footer>
-  <p>Ícones feitos por <a href="https://www.flaticon.com/authors/berkahicon" title="berkahicon">berkahicon</a>
-     de <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
-</footer>
+        <p>Ícones feitos por <a href="https://www.flaticon.com/authors/berkahicon" title="berkahicon">berkahicon</a>
+        de <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
+        <p>Projeto desenvolvido como parte do TCC em Análise e Desenvolvimento de Sistemas - 2023</p>
+    </footer>
 </body>
 </html>

@@ -9,14 +9,16 @@
 </head>
 <body>
 
-    <nav>
+    <nav class="top-nav">
         {% if current_user.is_authenticated %}
             <span>Bem-vindo, {{ current_user.nome }}!</span>  |
+            <a href="{{ url_for('home') }}">Inicio</a>  |
             <a href="{{ url_for('sobre') }}">Sobre nós</a>  |
             <a href="{{ url_for('auth.denunciarAnimais') }}">Denunciar Animal</a>  |
             <a href="{{ url_for('auth.cadastrar_ponto') }}">Cadastrar Ponto de Adoção</a>  |
             <a href="{{ url_for('auth.logout') }}">Logout</a>
         {% else %}
+            <a href="{{ url_for('home') }}">Inicio</a>  |
             <a href="{{ url_for('sobre') }}">Sobre nós</a>  |
             <a href="{{ url_for('auth.login') }}">Login</a>  |
             <a href="{{ url_for('auth.register') }}">Cadastro</a>
@@ -36,21 +38,40 @@
     <h1>Bem-vindo ao sistema de Adoção e Denúncia de Animais</h1>
 
     <div id="map-container">
-    <div id="map"></div>
-  </div>
+        <div id="map"></div>
+    </div>
 
     <div class="tabs">
         <button class="tab-btn active" data-tab="denuncias">Denúncias</button>
         <button class="tab-btn" data-tab="adocoes">Pontos de Adoção</button>
     </div>
+
+    <!-- Filtro por Data -->
+    <div class="filter-container">
+    <label for="start-date">De:</label>
+    <input type="date" id="start-date">
+
+    <label for="end-date">Até:</label>
+    <input type="date" id="end-date">
+
+    <label for="min-qty">Qtd. mínima:</label>
+    <input type="number" id="min-qty" min="0" placeholder="0">
+
+    <label for="max-qty">Qtd. máxima:</label>
+    <input type="number" id="max-qty" min="0" placeholder="∞">
+
+    <button id="filter-btn">Filtrar</button>
+    <button id="reset-btn">Limpar</button>
+</div>
    
 <section id="denuncias" class="tab-content active">
   <div class="cards-container">
     {% for d in denuncias %}
-      <div class="card-item">
+      <div class="card-item" data-date="{{ d.criado_em }}">
+        <strong>Data:</strong> {{ d.criado_em.strftime('%Y-%m-%d') }} |
         <strong>Animal:</strong> {{ d.tipo_animal }} |
-        <strong>Qtd:</strong> {{ d.quantidade }} |
-        <strong>Coordenada:</strong> 
+        <strong>Quantidade:</strong> {{ d.quantidade }} |
+        <strong>Localização:</strong> 
         <a href="#" class="coord-link" data-lat="{{ d.cordenada.split(',')[0] }}" data-lng="{{ d.cordenada.split(',')[1] }}">
           {{ d.cordenada }}
         </a>
@@ -62,17 +83,18 @@
 <section id="adocoes" class="tab-content">
   <div class="cards-container">
     {% for p in pontos %}
-      <div class="card-item">
+      <div class="card-item" data-date="{{ p.criado_em }}">
         <div class="local-name" data-lat="{{ p.cordenada.split(',')[0] }}" data-lng="{{ p.cordenada.split(',')[1] }}">
           <a href="#" class="coord-link" data-lat="{{ p.cordenada.split(',')[0] }}" data-lng="{{ p.cordenada.split(',')[1] }}">
-          {{ p.nome_local }}
+            {{ p.nome_local }}
           </a>
         </div>
         <div class="card-details">
+          <strong>Data:</strong> {{ p.criado_em.strftime('%Y-%m-%d') }}
           <div><strong>Animal:</strong> {{ p.tipo_animal }}</div>
-          <div><strong>Qtd disponível:</strong> {{ p.quantidade_disponivel }}</div>
+          <div><strong>Quantidade disponível:</strong> {{ p.quantidade_disponivel }}</div>
           <div>
-            <strong>Coordenada:</strong> 
+            <strong>Localização:</strong> 
             <a href="#" class="coord-link" data-lat="{{ p.cordenada.split(',')[0] }}" data-lng="{{ p.cordenada.split(',')[1] }}">
               {{ p.cordenada }}
             </a>
@@ -82,6 +104,60 @@
     {% endfor %}
   </div>
 </section>
+
+    <script>
+    document.getElementById("filter-btn").addEventListener("click", () => {
+        const start = document.getElementById("start-date").value;
+        const end = document.getElementById("end-date").value;
+        const minQty = document.getElementById("min-qty").value;
+        const maxQty = document.getElementById("max-qty").value;
+        const cards = document.querySelectorAll(".card-item");
+
+        const today = new Date(); // data atual
+
+        cards.forEach(card => {
+            const cardDate = new Date(card.getAttribute("data-date"));
+            const startDate = start ? new Date(start) : null;
+            const endDate = end ? new Date(end + "T23:59:59") : null; // inclui o dia inteiro
+
+            // pegar quantidade no card
+            let qtyText = card.textContent.match(/Quantidade:\s*(\d+)/);
+            let qty = qtyText ? parseInt(qtyText[1]) : 0;
+
+            const min = minQty ? parseInt(minQty) : null;
+            const max = maxQty ? parseInt(maxQty) : null;
+
+            let show = true;
+
+            // FILTRO POR DATA
+            if (startDate && !endDate) {
+                if (cardDate < startDate || cardDate > today) show = false;
+            } else if (!startDate && endDate) {
+                if (cardDate > endDate) show = false;
+            } else {
+                if (startDate && cardDate < startDate) show = false;
+                if (endDate && cardDate > endDate) show = false;
+            }
+
+            // FILTRO POR QUANTIDADE
+            if (min !== null && qty < min) show = false;
+            if (max !== null && qty > max) show = false;
+
+            card.style.display = show ? "block" : "none";
+        });
+    });
+
+    document.getElementById("reset-btn").addEventListener("click", () => {
+        document.getElementById("start-date").value = "";
+        document.getElementById("end-date").value = "";
+        document.getElementById("min-qty").value = "";
+        document.getElementById("max-qty").value = "";
+        document.querySelectorAll(".card-item").forEach(card => {
+            card.style.display = "block";
+        });
+    });
+</script>
+
     <script>
         const denuncias = {{ denuncias | tojson }};
         const pontos = {{ pontos | tojson }};

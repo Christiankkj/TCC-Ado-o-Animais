@@ -9,21 +9,22 @@
 </head>
 <body>
 
-<nav class="top-nav">
-    {% if current_user.is_authenticated %}
-        <span>Bem-vindo, {{ current_user.nome }}!</span> |
-        <a href="{{ url_for('home') }}">Inicio</a>  |
-        <a href="{{ url_for('auth.denunciarAnimais') }}">Denunciar Animal</a> |
-        <a href="{{ url_for('auth.cadastrar_ponto') }}">Cadastrar Ponto de Adoção</a> |
-        <a href="{{ url_for('auth.logout') }}">Sair</a>
-    {% else %}
-        <a href="{{ url_for('auth.login') }}">Acessar</a> |
-        <a href="{{ url_for('auth.register') }}">Criar Conta</a>
-    {% endif %}
-</nav>
+ <nav class="top-nav">
+        {% if current_user.is_authenticated %}
+            <span>Bem-vindo, {{ current_user.nome }}!</span>  |
+            <a href="{{ url_for('home') }}">Inicio</a>  |
+            <a href="{{ url_for('sobre') }}">Sobre nós</a>  |
+            <a href="{{ url_for('auth.denunciarAnimais') }}">Denunciar Animal</a>  |
+            <a href="{{ url_for('auth.cadastrar_ponto') }}">Cadastrar Ponto de Adoção</a>  |
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('sobre') }}">Sobre nós</a>  |
+            <a href="{{ url_for('auth.login') }}">Login</a>  |
+            <a href="{{ url_for('auth.register') }}">Cadastro</a>
+        {% endif %}
+    </nav>
 
 <main>
-    <h2>Cadastro de Ponto de Adoção</h2>
 
     <!-- Caixa de instruções -->
 

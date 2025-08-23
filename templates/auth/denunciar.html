@@ -10,24 +10,33 @@
 <body>
 
 <nav class="top-nav">
-    {% if current_user.is_authenticated %}
-        <span>Bem-vindo, {{ current_user.nome }}!</span>  |
-        <a href="{{ url_for('home') }}">Inicio</a>  |
-        <a href="{{ url_for('auth.denunciarAnimais') }}">Denunciar Animal</a>  |
-        <a href="{{ url_for('auth.cadastrar_ponto') }}">Cadastrar Ponto de Adoção</a>  |
-        <a href="{{ url_for('auth.logout') }}">Logout</a>
-    {% else %}
-        <a href="{{ url_for('auth.login') }}">Login</a>  |
-        <a href="{{ url_for('auth.register') }}">Cadastro</a>
-    {% endif %}
-</nav>
+        {% if current_user.is_authenticated %}
+            <span>Bem-vindo, {{ current_user.nome }}!</span>  |
+            <a href="{{ url_for('home') }}">Inicio</a>  |
+            <a href="{{ url_for('sobre') }}">Sobre nós</a>  |
+            <a href="{{ url_for('auth.denunciarAnimais') }}">Denunciar Animal</a>  |
+            <a href="{{ url_for('auth.cadastrar_ponto') }}">Cadastrar Ponto de Adoção</a>  |
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('sobre') }}">Sobre nós</a>  |
+            <a href="{{ url_for('auth.login') }}">Login</a>  |
+            <a href="{{ url_for('auth.register') }}">Cadastro</a>
+        {% endif %}
+    </nav>
 
-<main class="denuncia-container">
-  <h2>Denúncia de Animais</h2>
+
+  
 
   <div id="map-container">
     <div id="map"></div>
   </div>
+  
+  <div class="denuncia-container">
+
+    <div class="info-box">
+        <h3>Formulário de Registro</h3>
+        <p>Preencha atentamente os campos a seguir para garantir que o ponto de denuncia seja exibido corretamente e esteja acessível ao público interessado.</p>
+    </div>
 
   <form class="denuncia-form" method="POST">
     {{ form.hidden_tag() }}
@@ -55,7 +64,12 @@
 
     <button type="submit" class="submit-btn">Enviar Denúncia</button>
   </form>
+  </div>
 </main>
+<script>
+        const denuncias = {{ denuncias | tojson }};
+        const pontos = {{ pontos | tojson }};
+    </script>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="{{ url_for('static', filename='js/ponto_adocao.js') }}"></script>
