@@ -35,7 +35,7 @@
       {% endif %}
     {% endwith %}
 
-    <h1>Bem-vindo ao sistema de Adoção e Denúncia de Animais</h1>
+    <h1>Bem-vindo ao Sistema de Adoção e Denúncia de Animais</h1>
 
     <div id="map-container">
         <div id="map"></div>
@@ -67,36 +67,23 @@
 <section id="denuncias" class="tab-content active">
   <div class="cards-container">
     {% for d in denuncias %}
-      <div class="card-item" data-date="{{ d.criado_em }}">
-        <strong>Data:</strong> {{ d.criado_em.strftime('%Y-%m-%d') }} |
-        <strong>Animal:</strong> {{ d.tipo_animal }} |
-        <strong>Quantidade:</strong> {{ d.quantidade }} |
-        <strong>Localização:</strong> 
-        <a href="#" class="coord-link" data-lat="{{ d.cordenada.split(',')[0] }}" data-lng="{{ d.cordenada.split(',')[1] }}">
-          {{ d.cordenada }}
-        </a>
-      </div>
-    {% endfor %}
-  </div>
-</section>
-
-<section id="adocoes" class="tab-content">
-  <div class="cards-container">
-    {% for p in pontos %}
-      <div class="card-item" data-date="{{ p.criado_em }}">
-        <div class="local-name" data-lat="{{ p.cordenada.split(',')[0] }}" data-lng="{{ p.cordenada.split(',')[1] }}">
-          <a href="#" class="coord-link" data-lat="{{ p.cordenada.split(',')[0] }}" data-lng="{{ p.cordenada.split(',')[1] }}">
-            {{ p.nome_local }}
-          </a>
+      <div class="card-item" data-date="{{ d.criado_em }}" data-quantity="{{ d.quantidade }}">
+        <div class="card-header">
+          <div class="card-date">{{ d.criado_em.strftime('%d/%m/%Y') }}</div>
         </div>
-        <div class="card-details">
-          <strong>Data:</strong> {{ p.criado_em.strftime('%Y-%m-%d') }}
-          <div><strong>Animal:</strong> {{ p.tipo_animal }}</div>
-          <div><strong>Quantidade disponível:</strong> {{ p.quantidade_disponivel }}</div>
-          <div>
-            <strong>Localização:</strong> 
-            <a href="#" class="coord-link" data-lat="{{ p.cordenada.split(',')[0] }}" data-lng="{{ p.cordenada.split(',')[1] }}">
-              {{ p.cordenada }}
+        <div class="card-content">
+          <div class="card-detail">
+            <span class="detail-label">Animal</span>
+            <span class="detail-value">{{ d.tipo_animal }}</span>
+          </div>
+          <div class="card-detail">
+            <span class="detail-label">Quantidade</span>
+            <span class="detail-value">{{ d.quantidade }}</span>
+          </div>
+          <div class="card-location">
+            <span class="detail-label">Localização</span>
+            <a href="#" class="coord-link" data-lat="{{ d.cordenada.split(',')[0] }}" data-lng="{{ d.cordenada.split(',')[1] }}">
+              Ver no mapa
             </a>
           </div>
         </div>
@@ -105,6 +92,38 @@
   </div>
 </section>
 
+<section id="adocoes" class="tab-content">
+  <div class="cards-container">
+    {% for p in pontos %}
+      <div class="card-item" data-date="{{ p.criado_em }}" data-quantity="{{ p.quantidade_disponivel }}">
+        <div class="card-header">
+          <h3 class="local-name" data-lat="{{ p.cordenada.split(',')[0] }}" data-lng="{{ p.cordenada.split(',')[1] }}">
+            <a href="#" class="coord-link" data-lat="{{ p.cordenada.split(',')[0] }}" data-lng="{{ p.cordenada.split(',')[1] }}">
+              {{ p.nome_local }}
+            </a>
+          </h3>
+          <div class="card-date">{{ p.criado_em.strftime('%d/%m/%Y') }}</div>
+        </div>
+        <div class="card-content">
+          <div class="card-detail">
+            <span class="detail-label">Animal</span>
+            <span class="detail-value">{{ p.tipo_animal }}</span>
+          </div>
+          <div class="card-detail">
+            <span class="detail-label">Disponíveis</span>
+            <span class="detail-value">{{ p.quantidade_disponivel }}</span>
+          </div>
+          <div class="card-location">
+            <span class="detail-label">Localização</span>
+            <a href="#" class="coord-link" data-lat="{{ p.cordenada.split(',')[0] }}" data-lng="{{ p.cordenada.split(',')[1] }}">
+              Ver no mapa
+            </a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
     <script>
     document.getElementById("filter-btn").addEventListener("click", () => {
         const start = document.getElementById("start-date").value;
